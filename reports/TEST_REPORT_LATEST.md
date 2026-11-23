@@ -1,8 +1,8 @@
 # PRIME Kernel Automated Test & Formal Verification Report
 
-- **Execution Timestamp**: 2026-11-23T13:20:15.021351+00:00
+- **Execution Timestamp**: 2026-11-23T13:30:36.237597+00:00
 - **Overall Verdict**: **ALL GATES PASSED**
-- **Total Execution Duration**: `54.64s`
+- **Total Execution Duration**: `32.34s`
 - **Governing Architecture**: ADR-0027 (PRIME Kernel Test Harness & Pre-Commit Gate)
 
 ---
@@ -11,9 +11,9 @@
 
 | Invariant / SLA Metric | Budget Ceiling | Measured Duration | Headroom | Status |
 | :--- | :---: | :---: | :---: | :--- |
-| **`INV-023-probe` (Axiom Guard & Negative Controls)** | `<= 3.00s` | `1.14s` | `62.1%` | **PASS** |
-| **`INV-023d-unit` (Host Literate Foundation)** | `<= 35.00s` | `23.11s` | `34.0%` | **PASS** |
-| **`INV-023d-int` (5-Domain Algebraic Ledger)** | `<= 30.00s` | `19.79s` | `34.0%` | **PASS** |
+| **`INV-023-probe` (Axiom Guard & Negative Controls)** | `<= 3.00s` | `1.62s` | `45.9%` | **PASS** |
+| **`INV-023d-unit` (Host Literate Foundation)** | `<= 35.00s` | `16.19s` | `53.7%` | **PASS** |
+| **`INV-023d-int` (5-Domain Algebraic Ledger)** | `<= 30.00s` | `9.14s` | `69.5%` | **PASS** |
 | **`INV-027e` (Pure ASCII Table Formatting)** | `0 non-ASCII` | `0 non-ASCII` | `100.0%` | **PASS** |
 
 ---
@@ -41,11 +41,11 @@
 ```markdown
 | Fixture / Carrier | Target Theorem | Observed Axiom Cone | (a) PA | (b) Clean | TCB Tier | Gate 3 Global Audit | Duration |
 | :--- | :--- | :---: | :---: | :---: | :--- | :--- | :---: |
-| **Finite Field ZMod 5 (Z/5Z)** | `C1ZMod5.c1_zmod5` | `[]` | **PASS** | **PASS** | Constructive Type Theory | **Gate 3 Certified** | `1.45s` |
-| **Symmetric Group S3 (Order 6)** | `C1S3.c1_s3` | `[]` | **PASS** | **PASS** | Constructive Type Theory | **Gate 3 Certified** | `1.66s` |
-| **Constructive Rational Prototype (Frac)** | `ConstructiveRat.c1_frac` | `[propext]` | **FAIL** | **PASS** | Constructive + Propext | **gate3_partial (Choice-Free Extension Section 4b)** | `1.60s` |
-| **Standard Lean 4 Rat (Init.Data.Rat)** | `c1_elementary_rat` | `[propext, Classical.choice, Quot.sound]` | **FAIL** | **PASS** | Full Classical TCB | **gate3_partial (Declared Classical Extension Section 4b)** | `1.77s` |
-| **Literate Dual-Carrier Rational Model (c1-std-rat)** | `C1StdRat.Main (rat_refl, frac_refl)` | `[]` | **PASS** | **PASS** | Dual-Carrier Packaging (Lean 4 + Frac) | **Gate 3 Certified** | `13.31s` |
+| **Finite Field ZMod 5 (Z/5Z)** | `C1ZMod5.c1_zmod5` | `[]` | **PASS** | **PASS** | Constructive Type Theory | **Gate 3 Certified** | `0.68s` |
+| **Symmetric Group S3 (Order 6)** | `C1S3.c1_s3` | `[]` | **PASS** | **PASS** | Constructive Type Theory | **Gate 3 Certified** | `0.75s` |
+| **Constructive Rational Prototype (Frac)** | `ConstructiveRat.c1_frac` | `[propext]` | **FAIL** | **PASS** | Constructive + Propext | **gate3_partial (Choice-Free Extension Section 4b)** | `0.71s` |
+| **Standard Lean 4 Rat (Init.Data.Rat)** | `c1_elementary_rat` | `[propext, Classical.choice, Quot.sound]` | **FAIL** | **PASS** | Full Classical TCB | **gate3_partial (Declared Classical Extension Section 4b)** | `0.64s` |
+| **Literate Dual-Carrier Rational Model (c1-std-rat)** | `C1StdRat.Main (rat_refl, frac_refl)` | `[]` | **PASS** | **PASS** | Dual-Carrier Packaging (Lean 4 + Frac) | **Gate 3 Certified** | `6.37s` |
 ```
 
 - **Packaging Validation vs. Full Inversion**:

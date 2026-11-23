@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-11-23T13:20:15.021351+00:00",
+  "timestamp": "2026-11-23T13:30:36.237597+00:00",
   "verdict": "PASSED",
-  "total_duration_seconds": 54.63557737298834,
+  "total_duration_seconds": 32.34429943098803,
   "sla_compliance": {
     "INV-023-probe": true,
     "INV-023d-unit": true,
@@ -32,7 +32,7 @@
         }
       ],
       "passed": true,
-      "duration": 0.33961363600974437
+      "duration": 0.6451568350021262
     },
     {
       "tier": 2,
@@ -125,7 +125,7 @@
         }
       ],
       "passed": true,
-      "duration": 1.136482314002933,
+      "duration": 1.623600966995582,
       "sla_pass": true
     },
     {
@@ -137,12 +137,12 @@
           "name": "lexlean_verify_foundation",
           "status": "PASSED",
           "attestation_id": "76d8d49f20155eef26c94b23fd78c8627dfac5f4a6ea11b23e8cc935f445c6c1",
-          "duration_seconds": 23.109565222999663,
+          "duration_seconds": 16.18938041399815,
           "output": "verified 4 modules; attestation 76d8d49f20155eef26c94b23fd78c8627dfac5f4a6ea11b23e8cc935f445c6c1"
         }
       ],
       "passed": true,
-      "duration": 23.109565222999663,
+      "duration": 16.18938041399815,
       "attestation_id": "76d8d49f20155eef26c94b23fd78c8627dfac5f4a6ea11b23e8cc935f445c6c1",
       "sla_pass": true
     },
@@ -159,11 +159,11 @@
           "name": "wasm_acceptance_vectors",
           "target": "6/6 acceptance vectors exact match",
           "status": "PASSED",
-          "details": "6/6 vectors exact match; cold init: 251.8us"
+          "details": "6/6 vectors exact match; cold init: 80.7us"
         }
       ],
       "passed": true,
-      "duration": 10.24575950599683
+      "duration": 4.739237598012551
     },
     {
       "tier": 5,
@@ -174,7 +174,7 @@
           "id": "c1-zmod5",
           "name": "Finite Field ZMod 5 (Z/5Z)",
           "theorem": "C1ZMod5.c1_zmod5",
-          "duration": 1.4518525609892095,
+          "duration": 0.6752056240075035,
           "exit_code": 0,
           "observed_cone": [],
           "pa_encodable": true,
@@ -186,7 +186,7 @@
           "id": "c1-s3",
           "name": "Symmetric Group S3 (Order 6)",
           "theorem": "C1S3.c1_s3",
-          "duration": 1.655898368000635,
+          "duration": 0.7465409239957808,
           "exit_code": 0,
           "observed_cone": [],
           "pa_encodable": true,
@@ -198,7 +198,7 @@
           "id": "c1-constructive-rat",
           "name": "Constructive Rational Prototype (Frac)",
           "theorem": "ConstructiveRat.c1_frac",
-          "duration": 1.5998775339976419,
+          "duration": 0.7092031570064137,
           "exit_code": 0,
           "observed_cone": [
             "propext"
@@ -212,7 +212,7 @@
           "id": "c1-elementary-rat",
           "name": "Standard Lean 4 Rat (Init.Data.Rat)",
           "theorem": "c1_elementary_rat",
-          "duration": 1.768374773004325,
+          "duration": 0.6435117299988633,
           "exit_code": 0,
           "observed_cone": [
             "propext",
@@ -228,7 +228,7 @@
           "id": "c1-std-rat",
           "name": "Literate Dual-Carrier Rational Model (c1-std-rat)",
           "theorem": "C1StdRat.Main (rat_refl, frac_refl)",
-          "duration": 13.314971258005244,
+          "duration": 6.36503777699545,
           "exit_code": 0,
           "observed_cone": [],
           "pa_encodable": true,
@@ -238,7 +238,7 @@
         }
       ],
       "passed": true,
-      "duration": 19.791424568000366,
+      "duration": 9.139934687991627,
       "sla_pass": true
     },
     {
@@ -259,7 +259,7 @@
         }
       ],
       "passed": true,
-      "duration": 0.002279605992953293
+      "duration": 0.0019482390052871779
     }
   ]
 }
