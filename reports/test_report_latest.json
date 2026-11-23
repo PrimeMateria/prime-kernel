@@ -1,0 +1,265 @@
+{
+  "timestamp": "2026-11-23T13:20:15.021351+00:00",
+  "verdict": "PASSED",
+  "total_duration_seconds": 54.63557737298834,
+  "sla_compliance": {
+    "INV-023-probe": true,
+    "INV-023d-unit": true,
+    "INV-023d-int": true
+  },
+  "tiers": [
+    {
+      "tier": 1,
+      "name": "Toolchain Environment & Language 1.2 Parity",
+      "tests": [
+        {
+          "name": "lean_version_pin",
+          "target": "Lean v4.32.2",
+          "status": "PASSED",
+          "output": "Lean (version 4.32.2, x86_64-unknown-linux-gnu, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c, Release)"
+        },
+        {
+          "name": "lexlean_version_pin",
+          "target": "LexLean v0.4.3",
+          "status": "PASSED",
+          "output": "lexlean 0.4.3\nlanguage 1.0\ncompiler-semantics 4bd46ef62ba56a77cb3c6453346671a809ccd665fc1f5334e4b1b9dce01f3245\nlean-toolchain leanprover/lean4:v4.32.2"
+        },
+        {
+          "name": "lake_version_pin",
+          "target": "Lake v5.0.0",
+          "status": "PASSED",
+          "output": "Lake version 5.0.0-src+f3b06c7 (Lean version 4.32.2)"
+        }
+      ],
+      "passed": true,
+      "duration": 0.33961363600974437
+    },
+    {
+      "tier": 2,
+      "name": "Phase 0 Axiom Probes & Gate 3 Negative Controls",
+      "sla_ceiling": 3.0,
+      "tests": [
+        {
+          "name": "probe:preflight_clean",
+          "status": "PASSED",
+          "expected": [],
+          "observed": []
+        },
+        {
+          "name": "probe:preflight_propext",
+          "status": "PASSED",
+          "expected": [
+            "propext"
+          ],
+          "observed": [
+            "propext"
+          ]
+        },
+        {
+          "name": "probe:preflight_quot",
+          "status": "PASSED",
+          "expected": [
+            "Quot.sound"
+          ],
+          "observed": [
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "probe:preflight_classical",
+          "status": "PASSED",
+          "expected": [
+            "Classical.choice"
+          ],
+          "observed": [
+            "Classical.choice"
+          ]
+        },
+        {
+          "name": "probe:preflight_decide",
+          "status": "PASSED",
+          "expected": [],
+          "observed": []
+        },
+        {
+          "name": "probe:preflight_native",
+          "status": "PASSED",
+          "expected": [
+            "preflight_native._native.native_decide.ax_1_1"
+          ],
+          "observed": [
+            "preflight_native._native.native_decide.ax_1_1"
+          ]
+        },
+        {
+          "name": "probe:preflight_trustCompiler",
+          "status": "PASSED",
+          "expected": [
+            "preflight_trustCompiler._native.native_decide.ax_1_1"
+          ],
+          "observed": [
+            "preflight_trustCompiler._native.native_decide.ax_1_1"
+          ]
+        },
+        {
+          "name": "probe:preflight_sorry",
+          "status": "PASSED",
+          "expected": [
+            "sorryAx"
+          ],
+          "observed": [
+            "sorryAx"
+          ]
+        },
+        {
+          "name": "TS-08_negative_control_native_decide",
+          "target": "Dynamic tactic pattern *.native_decide.ax_* rejected",
+          "status": "PASSED",
+          "details": "Gate 3 intercepted dynamic native_decide axiom via pattern match."
+        },
+        {
+          "name": "TS-09_negative_control_sorryAx",
+          "target": "Literal axiom sorryAx rejected",
+          "status": "PASSED",
+          "details": "Gate 3 intercepted sorryAx proof abandonment via literal match."
+        }
+      ],
+      "passed": true,
+      "duration": 1.136482314002933,
+      "sla_pass": true
+    },
+    {
+      "tier": 3,
+      "name": "Host Literate Foundation Formal Verification",
+      "sla_ceiling": 35.0,
+      "tests": [
+        {
+          "name": "lexlean_verify_foundation",
+          "status": "PASSED",
+          "attestation_id": "76d8d49f20155eef26c94b23fd78c8627dfac5f4a6ea11b23e8cc935f445c6c1",
+          "duration_seconds": 23.109565222999663,
+          "output": "verified 4 modules; attestation 76d8d49f20155eef26c94b23fd78c8627dfac5f4a6ea11b23e8cc935f445c6c1"
+        }
+      ],
+      "passed": true,
+      "duration": 23.109565222999663,
+      "attestation_id": "76d8d49f20155eef26c94b23fd78c8627dfac5f4a6ea11b23e8cc935f445c6c1",
+      "sla_pass": true
+    },
+    {
+      "tier": 4,
+      "name": "Application Layer & WebAssembly Conformance",
+      "tests": [
+        {
+          "name": "prismpm_model_check",
+          "status": "PASSED",
+          "output": "Model schema and capability sandbox verified clean"
+        },
+        {
+          "name": "wasm_acceptance_vectors",
+          "target": "6/6 acceptance vectors exact match",
+          "status": "PASSED",
+          "details": "6/6 vectors exact match; cold init: 251.8us"
+        }
+      ],
+      "passed": true,
+      "duration": 10.24575950599683
+    },
+    {
+      "tier": 5,
+      "name": "Five-Domain Algebraic Fixtures Ledger",
+      "sla_ceiling": 30.0,
+      "fixtures": [
+        {
+          "id": "c1-zmod5",
+          "name": "Finite Field ZMod 5 (Z/5Z)",
+          "theorem": "C1ZMod5.c1_zmod5",
+          "duration": 1.4518525609892095,
+          "exit_code": 0,
+          "observed_cone": [],
+          "pa_encodable": true,
+          "clean_cone": true,
+          "gate3": "Gate 3 Certified",
+          "tcb_tier": "Constructive Type Theory"
+        },
+        {
+          "id": "c1-s3",
+          "name": "Symmetric Group S3 (Order 6)",
+          "theorem": "C1S3.c1_s3",
+          "duration": 1.655898368000635,
+          "exit_code": 0,
+          "observed_cone": [],
+          "pa_encodable": true,
+          "clean_cone": true,
+          "gate3": "Gate 3 Certified",
+          "tcb_tier": "Constructive Type Theory"
+        },
+        {
+          "id": "c1-constructive-rat",
+          "name": "Constructive Rational Prototype (Frac)",
+          "theorem": "ConstructiveRat.c1_frac",
+          "duration": 1.5998775339976419,
+          "exit_code": 0,
+          "observed_cone": [
+            "propext"
+          ],
+          "pa_encodable": false,
+          "clean_cone": true,
+          "gate3": "gate3_partial (Choice-Free Extension Section 4b)",
+          "tcb_tier": "Constructive + Propext"
+        },
+        {
+          "id": "c1-elementary-rat",
+          "name": "Standard Lean 4 Rat (Init.Data.Rat)",
+          "theorem": "c1_elementary_rat",
+          "duration": 1.768374773004325,
+          "exit_code": 0,
+          "observed_cone": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "pa_encodable": false,
+          "clean_cone": true,
+          "gate3": "gate3_partial (Declared Classical Extension Section 4b)",
+          "tcb_tier": "Full Classical TCB"
+        },
+        {
+          "id": "c1-std-rat",
+          "name": "Literate Dual-Carrier Rational Model (c1-std-rat)",
+          "theorem": "C1StdRat.Main (rat_refl, frac_refl)",
+          "duration": 13.314971258005244,
+          "exit_code": 0,
+          "observed_cone": [],
+          "pa_encodable": true,
+          "clean_cone": true,
+          "gate3": "Gate 3 Certified",
+          "tcb_tier": "Dual-Carrier Packaging (Lean 4 + Frac)"
+        }
+      ],
+      "passed": true,
+      "duration": 19.791424568000366,
+      "sla_pass": true
+    },
+    {
+      "tier": 6,
+      "name": "Documentation Consistency & Pure-ASCII Gating (INV-027e)",
+      "tests": [
+        {
+          "name": "pure_ascii_tables:README.md",
+          "status": "PASSED",
+          "non_ascii_count": 0,
+          "details": "0 non-ASCII characters in table lines"
+        },
+        {
+          "name": "pure_ascii_tables:Lean Kernel Axioms Analysis.tex",
+          "status": "PASSED",
+          "non_ascii_count": 0,
+          "details": "0 non-ASCII characters in table lines"
+        }
+      ],
+      "passed": true,
+      "duration": 0.002279605992953293
+    }
+  ]
+}

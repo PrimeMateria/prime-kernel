@@ -1,0 +1,5 @@
+module
+set_option autoImplicit false
+namespace PirtmPhase0ManifestReview.Main
+
+end PirtmPhase0ManifestReview.Main

@@ -1,0 +1,232 @@
+{
+  "timestamp": "20261123T060225",
+  "iso_time": "2026-11-23T06:02:25.724621",
+  "summary": {
+    "status": "PASS",
+    "passed": 9,
+    "total": 9,
+    "total_duration": 26.854987621307373
+  },
+  "toolchain": {
+    "lean_version": {
+      "status": true,
+      "output": "Lean (version 4.32.2, x86_64-unknown-linux-gnu, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c, Release)",
+      "duration": 0.10593676567077637
+    },
+    "lake_version": {
+      "status": true,
+      "output": "Lake version 5.0.0-src+f3b06c7 (Lean version 4.32.2)",
+      "duration": 0.10975003242492676
+    },
+    "toolchain_pin": {
+      "status": true,
+      "pinned": "leanprover/lean4:v4.32.2",
+      "active": "Lean (version 4.32.2, x86_64-unknown-linux-gnu, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c, Release)"
+    },
+    "lexlean": {
+      "status": true,
+      "info": {
+        "version": "0.4.3",
+        "cli_language": "1.0",
+        "semantics_id": "4bd46ef62ba56a77cb3c6453346671a809ccd665fc1f5334e4b1b9dce01f3245",
+        "lean_toolchain": "leanprover/lean4:v4.32.2",
+        "language": "1.2"
+      },
+      "raw": "lexlean 0.4.3\nlanguage 1.0\ncompiler-semantics 4bd46ef62ba56a77cb3c6453346671a809ccd665fc1f5334e4b1b9dce01f3245\nlean-toolchain leanprover/lean4:v4.32.2"
+    }
+  },
+  "lake_build": {
+    "status": true,
+    "returncode": 0,
+    "output": "Build completed successfully (3 jobs).",
+    "duration": 0.21266818046569824,
+    "forbidden_hits": []
+  },
+  "preflight": {
+    "status": true,
+    "returncode": 0,
+    "output": "Preflight.lean:97:8: warning: declaration uses `sorry`\n'preflight_clean' does not depend on any axioms\n'preflight_propext' depends on axioms: [propext]\n'preflight_quot' depends on axioms: [Quot.sound]\n'preflight_classical' depends on axioms: [Classical.choice]\n'preflight_decide' does not depend on any axioms\n'preflight_native' depends on axioms: [preflight_native._native.native_decide.ax_1_1]\n'preflight_trustCompiler' depends on axioms: [preflight_trustCompiler._native.native_decide.ax_1_1]\n'preflight_sorry' depends on axioms: [sorryAx]",
+    "duration": 2.1528103351593018,
+    "clean_sanity_passed": true,
+    "ledger_rows": [
+      {
+        "probe_id": "preflight_clean",
+        "theorem": "preflight_clean",
+        "predicted": [],
+        "actual_cone": [],
+        "on_policy_list": [],
+        "unknown": [],
+        "classification": "present_as_expected",
+        "notes": "Instrument sanity check passed (clean)"
+      },
+      {
+        "probe_id": "preflight_propext",
+        "theorem": "preflight_propext",
+        "predicted": [
+          "propext"
+        ],
+        "actual_cone": [
+          "propext"
+        ],
+        "on_policy_list": [
+          "propext"
+        ],
+        "unknown": [],
+        "classification": "present_as_expected",
+        "notes": "Observed exact predicted cone ['propext']"
+      },
+      {
+        "probe_id": "preflight_quot",
+        "theorem": "preflight_quot",
+        "predicted": [
+          "Quot.sound"
+        ],
+        "actual_cone": [
+          "Quot.sound"
+        ],
+        "on_policy_list": [
+          "Quot.sound"
+        ],
+        "unknown": [],
+        "classification": "present_as_expected",
+        "notes": "Observed exact predicted cone ['Quot.sound']"
+      },
+      {
+        "probe_id": "preflight_classical",
+        "theorem": "preflight_classical",
+        "predicted": [
+          "Classical.choice"
+        ],
+        "actual_cone": [
+          "Classical.choice"
+        ],
+        "on_policy_list": [
+          "Classical.choice"
+        ],
+        "unknown": [],
+        "classification": "present_as_expected",
+        "notes": "Observed exact predicted cone ['Classical.choice']"
+      },
+      {
+        "probe_id": "preflight_decide",
+        "theorem": "preflight_decide",
+        "predicted": [],
+        "actual_cone": [],
+        "on_policy_list": [],
+        "unknown": [],
+        "classification": "absent_as_expected",
+        "notes": "Kernel reduction path is completely clean"
+      },
+      {
+        "probe_id": "preflight_native",
+        "theorem": "preflight_native",
+        "predicted": [
+          "Lean.ofReduceBool"
+        ],
+        "actual_cone": [
+          "preflight_native._native.native_decide.ax_1_1"
+        ],
+        "on_policy_list": [],
+        "unknown": [
+          "preflight_native._native.native_decide.ax_1_1"
+        ],
+        "classification": "present_unexpected",
+        "notes": "Refactored native evaluation: dynamic tactic axiom emitted: ['preflight_native._native.native_decide.ax_1_1']"
+      },
+      {
+        "probe_id": "preflight_trustCompiler",
+        "theorem": "preflight_trustCompiler",
+        "predicted": [
+          "Lean.ofReduceBool"
+        ],
+        "actual_cone": [
+          "preflight_trustCompiler._native.native_decide.ax_1_1"
+        ],
+        "on_policy_list": [],
+        "unknown": [
+          "preflight_trustCompiler._native.native_decide.ax_1_1"
+        ],
+        "classification": "present_unexpected",
+        "notes": "Refactored native evaluation: dynamic tactic axiom emitted: ['preflight_trustCompiler._native.native_decide.ax_1_1']"
+      },
+      {
+        "probe_id": "preflight_sorry",
+        "theorem": "preflight_sorry",
+        "predicted": [
+          "sorryAx"
+        ],
+        "actual_cone": [
+          "sorryAx"
+        ],
+        "on_policy_list": [
+          "sorryAx"
+        ],
+        "unknown": [],
+        "classification": "present_as_expected",
+        "notes": "Observed exact predicted cone ['sorryAx']"
+      }
+    ],
+    "empirical_forbidden_set": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext",
+      "sorryAx"
+    ],
+    "unobservable_forbidden_set": [
+      "Lean.ofReduceBool",
+      "Lean.trustCompiler"
+    ],
+    "unknown_constants_observed": [
+      "preflight_native._native.native_decide.ax_1_1",
+      "preflight_trustCompiler._native.native_decide.ax_1_1"
+    ],
+    "gate3_status": "partially_confirmed (dynamic native_decide tactic axioms identified)"
+  },
+  "lexlean": {
+    "lock_check": {
+      "status": true,
+      "returncode": 0,
+      "output": "lexlean.lock is current",
+      "duration": 1.106665849685669
+    },
+    "check": {
+      "status": true,
+      "returncode": 0,
+      "modules_checked": 4,
+      "output": "checked 4 modules (source 608b75b884bffe11f0b2eea42a11aa1cb773a6761768a642398f2ffcf63dea42, semantic 6207c6587ac600206fd10b683fcc86a955d28270f1ab36affcb90b84a1d5e9c8)",
+      "duration": 1.1677985191345215
+    },
+    "verify": {
+      "status": true,
+      "returncode": 0,
+      "modules_verified": 4,
+      "attestation": "76d8d49f20155eef26c94b23fd78c8627dfac5f4a6ea11b23e8cc935f445c6c1",
+      "output": "verified 4 modules; attestation 76d8d49f20155eef26c94b23fd78c8627dfac5f4a6ea11b23e8cc935f445c6c1",
+      "duration": 20.388944149017334
+    }
+  },
+  "artifact_audit": {
+    "status": true,
+    "verified_dir_exists": true,
+    "verified_hashes": [
+      "76d8d49f20155eef26c94b23fd78c8627dfac5f4a6ea11b23e8cc935f445c6c1",
+      "6a402380c927bd111f10350208c19a29d535941cd9f31fc7a3822eae9b12ebd6",
+      "7aedfbd9d2f67a21fda53a4be04562b0bea4f606fe94d9786a1e05a1762f5910",
+      "ebf7ac9ff632dd46556dba2b181b86017bcea164b1f1d1215f269c6ec52ade07",
+      "98e3d246b595fcbb98dceebce384283c3501173a6154a4966a9f55ee7d398190"
+    ],
+    "attestation": "76d8d49f20155eef26c94b23fd78c8627dfac5f4a6ea11b23e8cc935f445c6c1"
+  },
+  "negative_controls": {
+    "status": true,
+    "duration": 1.4040813446044922,
+    "native_cone": [
+      "negative_control_native._native.native_decide.ax_1_1"
+    ],
+    "native_matched": true,
+    "sorry_cone": [
+      "sorryAx"
+    ],
+    "sorry_matched": true
+  }
+}

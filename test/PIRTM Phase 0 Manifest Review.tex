@@ -1,0 +1,196 @@
+Below is the preflight as a runnable file, the exact command sequence, and the fillable ledger skeleton. I have marked each probe's compile-risk honestly; none of the probes are clever, but the toolchain version is old enough that the conservative version is the correct version.
+
+## 1. `Preflight.lean`
+
+```lean
+/-
+Preflight.lean — empirical forbidden-constant probe for Lean 4.32.2
+Phase 0 artifact; see PHASE0_MANIFEST.md §4, §4a, Gate 3.
+
+Purpose
+-------
+Empirically determine which of the six policy-forbidden constants
+(propext, Quot.sound, Classical.choice, Lean.ofReduceBool,
+ Lean.trustCompiler, sorryAx)
+appear in #print axioms output under the pinned toolchain.
+
+The six-item list is POLICY (defensive upper bound).
+The output of this file is EMPIRICAL (what the pin actually exposes).
+Gate 3's cone scan uses the empirical set; the policy list guards
+against future pins where a name reappears.
+
+Run
+---
+  lake env lean Preflight.lean 2>&1 | tee preflight_$(date +%Y%m%dT%H%M%S).log
+  (or, outside a Lake project: lean Preflight.lean 2>&1 | tee ...)
+
+Compile-risk notes
+------------------
+  - Classical.choose / Classical.choose_spec: usually in default prelude.
+    If they fail to resolve, add `import Init.Classical` at the top.
+  - native_decide: usually in default prelude. If it fails to resolve,
+    add `import Lean` at the top. If it still fails, remove §2b and §2c
+    and record `native_decide_unavailable` as the preflight finding.
+  - List.range was deliberately NOT used. Concrete arithmetic is
+    guaranteed to be in default prelude; List.range is not. The manifest
+    example `List.range 100` is equivalent in purpose; substitute it back
+    only if you have confirmed List.range resolves in your prelude.
+  - sorry emits a warning, not an error. The warning is expected and is
+    evidence that sorryAx is in the cone.
+-/
+
+-- Add imports here if any probe below fails to resolve:
+-- import Init.Classical
+-- import Lean
+
+/-! ## §0. Instrument sanity check — must report NO axioms
+
+    If this theorem reports any axiom, the instrument is broken and no
+    other output in this file is interpretable. -/
+
+theorem preflight_clean : (0 : Nat) = 0 := rfl
+
+/-! ## §1. Kernel primitive probes -/
+
+-- propext: directly applies the axiom. Expected cone: [propext].
+theorem preflight_propext (a b : Prop) (h : a ↔ b) : a = b :=
+  propext h
+
+-- Quot.sound: constructs two quotient elements related by the
+-- always-true relation. Expected cone: [Quot.sound].
+theorem preflight_quot :
+    Quot.mk (fun (_ _ : Nat) => True) (0 : Nat) =
+    Quot.mk (fun (_ _ : Nat) => True) (1 : Nat) :=
+  Quot.sound trivial
+
+-- Classical.choice: extracts a witness non-constructively.
+-- Expected cone: [Classical.choice] (plus Quot.sound/propext only if
+-- the choice implementation traverses them — record what actually appears).
+noncomputable def preflight_classical_val : Nat :=
+  Classical.choose (show ∃ n : Nat, n = 0 from ⟨0, rfl⟩)
+
+theorem preflight_classical : preflight_classical_val = 0 :=
+  Classical.choose_spec (show ∃ n : Nat, n = 0 from ⟨0, rfl⟩)
+
+/-! ## §2. Computational-path probes (control + native)
+
+    §2a is the control: kernel reduction, expected clean cone.
+    §2b is the native path: expected cone [Lean.ofReduceBool].
+    The *difference* between §2a and §2b is exactly the trust expansion.
+    §2c is a second native-path probe with a different macro shape;
+    if Lean.trustCompiler is observable in a cone, it will appear here
+    or in §2b. If it appears in neither, classify it
+    `unobservable_via_print_axioms`, not `absent`. -/
+
+-- §2a. decide — kernel-reduction path. Expected cone: [] (clean).
+theorem preflight_decide : (1000 : Nat) + 1000 = 2000 := by
+  decide
+
+-- §2b. native_decide — native path. Expected cone: [Lean.ofReduceBool].
+theorem preflight_native : (1000 : Nat) + 1000 = 2000 := by
+  native_decide
+
+-- §2c. native_decide with a different macro shape. Expected cone:
+-- [Lean.ofReduceBool] (and Lean.trustCompiler if observable at all).
+theorem preflight_trustCompiler : (100 : Nat) * 100 = 10000 := by
+  native_decide
+
+/-! ## §3. Proof abandonment probe -/
+
+-- sorryAx: expected cone [sorryAx]. The warning emitted here is
+-- evidence, not failure.
+theorem preflight_sorry : (1 : Nat) = 1 := by
+  sorry
+
+/-! ## §4. Emit the empirical cones -/
+
+#print axioms preflight_clean
+#print axioms preflight_propext
+#print axioms preflight_quot
+#print axioms preflight_classical
+#print axioms preflight_decide
+#print axioms preflight_native
+#print axioms preflight_trustCompiler
+#print axioms preflight_sorry
+```
+
+## 2. Exact command sequence
+
+```bash
+# --- Step 1: save the file ---
+# Place Preflight.lean at the repo root (or wherever Phase 0 artifacts live).
+
+# --- Step 2: compile + capture (Lake project) ---
+lake env lean Preflight.lean 2>&1 | tee preflight_$(date +%Y%m%dT%H%M%S).log
+
+# If not in a Lake project:
+# lean Preflight.lean 2>&1 | tee preflight_$(date +%Y%m%dT%H%M%S).log
+
+# --- Step 3: extract the cone lines (one per theorem) ---
+grep -E "depends on axioms|does not depend on any axioms" preflight_*.log
+
+# --- Step 4: record the pinned toolchain for the ledger ---
+lean --version | tee -a preflight_$(date +%Y%m%dT%H%M%S).log
+
+# --- Step 5: check for compile failures before interpreting anything ---
+grep -E "error:" preflight_*.log && echo "COMPILE FAILURE — do not interpret cones" \
+                                  || echo "compile clean — interpret cones"
+```
+
+**Do not interpret any cone output before Step 5 returns `compile clean`.** A partially compiled file will emit cones for the theorems that did elaborate, and those cones are not evidence about the environment as a whole.
+
+## 3. Ledger-row skeleton
+
+Fill one row per probe. The `actual_cone` field is verbatim from `#print axioms`; do not normalize it. `on_policy_list` is the intersection of `actual_cone` with the six-item list. `unknown` is `actual_cone \ policy_list` — every entry here is a finding.
+
+```
+| probe_id                 | theorem                       | predicted                                | actual_cone (verbatim) | on_policy_list | unknown | classification               | notes |
+|--------------------------|-------------------------------|------------------------------------------|------------------------|----------------|---------|------------------------------|-------|
+| preflight_clean          | preflight_clean               | []                                       |                        |                |         |                              |       |
+| preflight_propext        | preflight_propext             | [propext]                                |                        |                |         |                              |       |
+| preflight_quot           | preflight_quot                | [Quot.sound]                             |                        |                |         |                              |       |
+| preflight_classical      | preflight_classical           | [Classical.choice]                       |                        |                |         |                              |       |
+| preflight_decide         | preflight_decide              | []                                       |                        |                |         |                              |       |
+| preflight_native         | preflight_native              | [Lean.ofReduceBool]                      |                        |                |         |                              |       |
+| preflight_trustCompiler  | preflight_trustCompiler       | [Lean.ofReduceBool]                      |                        |                |         |                              |       |
+| preflight_sorry          | preflight_sorry               | [sorryAx]                                |                        |                |         |                              |       |
+```
+
+**`classification` enum** (one value per row):
+
+- `present_as_expected` — predicted constant appears, no unknown.
+- `present_unexpected` — predicted constant appears, plus one or more unknowns (record them in `unknown`).
+- `absent_as_expected` — predicted constant does not appear.
+- `absent_unexpected` — predicted constant does not appear (e.g., `native_decide` did not emit `Lean.ofReduceBool` on this pin). This is a substantive finding, not a pass.
+- `unobservable_via_print_axioms` — the probe is structurally incapable of surfacing the constant (this is what `Lean.trustCompiler` is expected to be in §2b/§2c).
+- `compile_error` — the probe did not compile; cone is not evidence.
+
+**Summary block** (append below the table after filling):
+
+```
+empirical_forbidden_set :=
+  { c ∈ {propext, Quot.sound, Classical.choice,
+         Lean.ofReduceBool, Lean.trustCompiler, sorryAx}
+    | c appeared in at least one actual_cone }
+
+unobservable_forbidden_set :=
+  { c ∈ policy_list | no probe is capable of surfacing c }
+  -- expected: {Lean.trustCompiler}
+
+unknown_constants_observed :=
+  union of all `unknown` cells across rows
+  -- if non-empty: escalate before phase1-1
+
+gate3_empirical_list_status :=
+  confirmed | partially_confirmed | refuted_by_unknown
+```
+
+## 4. What the run will and will not settle
+
+- **It settles** which of the six appear in `#print axioms` under 4.32.2. That is the empirical list Gate 3 will use.
+- **It settles** whether `native_decide` on this pin emits `Lean.ofReduceBool` (expected) or something else (a finding).
+- **It settles** whether `Lean.trustCompiler` is observable via `#print axioms` (expected: no — it is a compiler-trace marker, not a kernel axiom). If it is observably absent, that is `unobservable_via_print_axioms`, **not** `absent`, because the marker may still fire without appearing in a theorem's cone.
+- **It does not settle** whether the std glossary uses any of these — that is phase1-1's job.
+- **It does not settle** PA-encodability — that is the §4a paragraph, not the cone.
+
+If `preflight_clean` returns anything other than "does not depend on any axioms," stop and fix the instrument before reading any other row. That single check is the gate on the gate.

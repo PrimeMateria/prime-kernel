@@ -1,0 +1,145 @@
+Axiomatic Architecture and Trusted Computing Base Stratification in Lean 4 Verification Manifests
+
+1. Axiomatic Core Stratification and Derivation of Function Extensionality
+Formal verification within interactive theorem provers relies on a precise, verifiable boundary for the Trusted Computing Base (TCB). In the Lean 4 proof assistant, formal soundness rests on a minimalist type-theoretic kernel executing the Calculus of Inductive Constructions (CIC). To preserve foundational rigor—especially when evaluating whether formalized proofs are encodable within weak foundational systems like Peano Arithmetic (PA)—verification manifests must track primitive kernel axioms, compiler trust escape hatches, and proof abandonment constructs with absolute fidelity [1].
+
+A fundamental structural insight in Lean 4’s mathematical architecture is the operational boundary separating true kernel primitives from derived standard library theorems [1, 2]. While function extensionality (funext) is indispensable in classical set theory and extensional mathematics, it is not a primitive kernel axiom in Lean 4 [1, 2]. Instead, Lean’s standard core library (Init.Core) proves funext constructively from the built-in quotient construction [1, 2, 3, 4, 5]. The core type system introduces quotient types via four foundational constants—Quot, Quot.mk, Quot.ind, and Quot.lift—which act as structural mechanisms within the logical framework similar to inductive types and recursors, adding zero axiomatic weight to the environment [2, 3, 6].
+
+To turn these structural primitives into a fully functional quotient mechanism that equates equivalent terms, Lean introduces a single primitive axiom: quotient soundness (Quot.sound) [2, 3, 6]. The formal declaration of Quot.sound asserts that if two elements a and b of type alpha are related by a relation r, their images under the quotient map Quot.mk r are propositionally equal [2, 3, 6]. From this single quotient axiom, Init.Core derives function extensionality—the principle that two functions f and g yielding equal outputs for all inputs x (∀ x, f x = g x) are themselves equal (f = g) [2, 4, 5, 6].
+
+Evaluating a function extensionality proof using the environment inspection command #print axioms funext demonstrates that funext resolves directly to [Quot.sound] (and propositional extensionality propext when evaluating propositionally valued functions), rather than registering a primitive funext constant [1, 5, 6]. Official Lean 4 documentation and community confirmations explicitly corroborate that funext is a derived theorem [1, 2, 3, 7]. Reclassifying funext as a derived theorem corrects the baseline primitive kernel axiom count in Lean 4 from four down to exactly three: propositional extensionality (propext), quotient soundness (Quot.sound), and the non-constructive axiom of choice (Classical.choice) [1, 8, 9, 10].
+
+2. Pinned Policy Formulation vs. Empirical Constant Enumeration
+When auditing proof dependency graphs for policy compliance—such as verifying no-Mathlib constraints or establishing arithmetic encodability—a policy manifest must explicitly enumerate all forbidden constants that expand the TCB or inject non-constructive axioms [1, 11, 12]. 
+
+A critical architectural finding from Phase 0 preflight verification on Lean 4.32.2 is that the six-declaration forbidden list formulated prior to testing represents a defensive POLICY SUPERSET, rather than the verbatim empirical constant inventory exposed by `#print axioms`:
+
+Constant Identifier | Category / Classification | Origin Domain | Empirical Status (4.32.2) | TCB Impact & Soundness Implications
+--- | --- | --- | --- | ---
+propext | Kernel Primitive Axiom | Init.Core / Kernel | Observed Literal (`['propext']`) | Introduces propositional extensionality ((a <-> b) -> a = b), adding propositional equality where definitional equality does not hold [2, 6, 9].
+Quot.sound | Kernel Primitive Axiom | Init.Core / Kernel | Observed Literal (`['Quot.sound']`) | Asserts quotient extensionality [2, 3, 6]. Serves as axiomatic base from which function extensionality (funext) is derived [1, 3, 5].
+Classical.choice | Kernel Primitive Axiom | Init.Core / Kernel | Observed Literal (`['Classical.choice']`) | Non-constructively derives data from an existential proposition (Nonempty alpha -> alpha) [2, 6, 9], requiring definitions using it to be noncomputable [2].
+*.native_decide.ax_* | Dynamic Compiler Trust Axiom | Init.Core / Native | Observed Pattern (`['*.native_decide.ax_*']`) | Emitted dynamically per invocation under RFC #12216 ("One axiom per native computation"), forcing kernel to accept native binary evaluation.
+Lean.ofReduceBool | Legacy Compiler Trust Axiom | Init.Core / Native | Absent (Refuted on 4.32.2) | Retained as policy superset for alternative/future pins; on 4.32.2, native_decide does NOT emit this literal.
+Lean.trustCompiler | Compiler Trust Marker | Compiler Subsystem | Unobservable via print axioms | Elaboration-trace marker emitted when native reflection bypasses macro expansion; unobservable in theorem proof cones.
+sorryAx | Proof Abandonment Axiom | Metaprogramming Core | Observed Literal (`['sorryAx']`) | Synthesizes a proof term for incomplete or abandoned goals [11], creating an unverified assumption that breaks soundness.
+
+This empirical preflight result refutes the assumption that Gate 3 can detect native computation by searching for the literal constant `Lean.ofReduceBool`. A scanner looking solely for `Lean.ofReduceBool` will miss every native compilation trust leak on this pin. Protection against compiler trust expansion requires an active pattern-match on `*.native_decide.ax_*`.
+
+3. Structural Evaluation and Two-Tier Verification Gating (LexLean vs. Gate 3)
+A vital architectural distinction exists between the two independent audits executed across the pipeline:
+1. LexLean Per-Module Audit (`{observed, policy, result}`): Evaluates whether a module's observed axiom cone conforms strictly to its own locally declared policy. A module declaring `policy: {axioms: ["Classical.choice"]}` and using it will return `result: ok` from LexLean.
+2. Gate 3 Global Policy Audit: Evaluates whether the closed dependency cone satisfies the global TCB policy defined in §4 and Section 4b. A module that passed LexLean's local check with `ok` will still be rejected by Gate 3 if it contains forbidden primitives without a declared Section 4b extension.
+
+The gating criteria enforce this structural stratification:
+- Criterion (a) — Peano Arithmetic (PA) Encodability: Requires constructive reduction inside the verified kernel (forbids all non-constructive primitives: `Classical.choice`, `Quot.sound`, `propext`).
+- Criterion (b) — Syntactic Cleanliness: Confirms the complete absence of ungrounded policy-forbidden constants (no `sorryAx`, no `*.native_decide.ax_*`, no undeclared axioms).
+
+Two-Tier Verification Matrix:
+
+| Target / Module | Theorem / Probe | Observed Axiom Cone | (a) PA | (b) Clean | LexLean Audit | Gate 3 Global | Architectural Status |
+| :--- | :--- | :---: | :---: | :---: | :---: | :--- |
+| **Instrument Reduction** | `preflight_decide` (1000+1000=2000) | `[]` | **PASS** | **PASS** | N/A (Lean probe) | **Certified** | Instrument Reduction Verified |
+| **Phase 1-1 Pipeline** | `LexLeanExample.Main.add_zero` | `[]` | **PASS** | **PASS** | **`ok`** (`observed: []`) | **Gate 3 Certified** | True Phase 1-1 Pipeline Pass |
+| **Application Layer** | `TextRequest.dispatch` | `{propext, Quot, Choice}` | **FAIL** | **PASS** | **`ok`** (`observed: [...]`) | **`gate3_partial`** | Declared Extension Section 4b |
+| **Negative Control 1** | `negative_control_native` | `['*.native_decide.ax_*']` | **FAIL** | **FAIL** | **REJECT** (`\noaxioms`) | **Hard Gate 3 Failure** | Rejected via Pattern Match |
+| **Negative Control 2** | `negative_control_sorry` | `['sorryAx']` | **FAIL** | **FAIL** | **REJECT** (`\noaxioms`) | **Hard Gate 3 Failure** | Rejected via Literal Match |
+| **Downstream C1 (Atlas RC1)**| `UorAtlas.Scales.xRC1` | `{propext, Quot, Choice}` | **FAIL** | **PASS** | **`ok`** (Declared policy) | **`gate3_partial`** | Verified Classical Extension Section 4b |
+| **Downstream C1 (ZMod 5)**| `C1ZMod5.c1_zmod5` | `[]` | **PASS** | **PASS** | **`ok`** (Purely constructive) | **Gate 3 Certified** | Finite Field Def. Reduction |
+| **Downstream C1 (S3 Group)**| `C1S3.c1_s3` | `[]` | **PASS** | **PASS** | **`ok`** (Purely constructive) | **Gate 3 Certified** | Non-Abelian Group Inversion |
+| **Downstream C1 (Frac Proto)**| `ConstructiveRat.c1_frac` | `[propext]` | **FAIL** | **PASS** | **`ok`** (Choice-Free) | **`gate3_partial`** | Choice-Free Rational Ext. (Section 4b) |
+| **Downstream C1 (Lean Rat)**| `c1_elementary_rat` | `{propext, Quot, Choice}` | **FAIL** | **PASS** | **`ok`** (via std.rat) | **`gate3_partial`** | Lean 4 Core Rat (GCD classical) |
+| **Downstream C1 (Std Rat)**| `C1StdRat.Main.rat_refl` | `[]` | **PASS** | **PASS** | **`ok`** (Declared policy) | **Gate 3 Certified** | Dual-Carrier Model Verified |
+
+4. Operational Manifest Specifications (§4, §4a, Section 4b)
+
+§4 — Pinned Empirical Forbidden Surface (Lean 4.32.2)
+The Gate 3 dependency cone scanner must execute according to the empirical findings:
+
+```yaml
+empirical_forbidden_set (Lean 4.32.2):
+  literal:
+    - propext
+    - Quot.sound
+    - Classical.choice
+    - sorryAx
+  pattern:
+    - "*.native_decide.ax_*"
+  policy-only (unobservable via #print axioms):
+    - Lean.trustCompiler
+  policy-superset (retained for pins where it reappears):
+    - Lean.ofReduceBool
+
+Gate 3 scan specification:
+  - literal names: exact string match
+  - native_decide: substring match on ".native_decide.ax_" (pattern observed on 4.32.2 from preflight probes; re-verify on pin change)
+  - Lean.ofReduceBool: absence is NOT evidence of no native_decide; the pattern match is the actual check
+  - Lean.trustCompiler: the cone scan cannot detect this constant; actual enforcement is the policy rule: "do not use native_decide in \noaxioms modules"
+```
+
+§4a — Pipeline Verification: Phase 1-1 Definition Amendment
+Phase 1-1 is formally defined as the complete compiler pipeline:
+$$\text{Literate TeX } (src/Main.lex.tex) \longrightarrow \text{LexLean IR} \longrightarrow \text{Lean 4 Kernel} \longrightarrow \text{leanchecker} \longrightarrow \text{Axiom Audit Probe}$$
+PrismPM packaging coverage is established separately by the application-layer TextRequest run.
+Executing Phase 1-1 on `examples/nat-add-zero` generated attestation `977e3bfb4eeeca01b3ca9e4d631fd4cc9e07703462c7fff32357314be68477f1`.
+Empirical audit probe inspection yields:
+```
+'LexLeanExample.Main.add_zero' does not depend on any axioms []
+```
+- Attestation Reproducibility: `attestation_covers: canonical JSON encoding of {build_manifest, declarations, oleans, processes, toolchain}`.
+- LexLean Audit Result: `{"name": "LexLeanExample.Main.add_zero", "observed": [], "policy": {"axioms": [], "kind": "none"}, "result": "ok"}`.
+- Gate 3 Audit Result: **Gate 3 Certified** (zero axioms, fully PA-encodable).
+
+Section 4b — Application Trust-Base Extensions
+Application-layer extensions are declared in each application's Section 4b (e.g., TextRequest in PRIME/kernel/lean); the policy manifest's role is to require that the declaration exists and that the extension is audited:
+
+```yaml
+Application Extension: TextRequest (PRIME/kernel/lean)
+Declared Extension: {propext, Quot.sound, Classical.choice}
+PA-encodable: NO (Criterion (a) FAIL — non-constructive via Classical.choice)
+Syntactically Clean: YES (Criterion (b) PASS — no sorryAx, no *.native_decide.ax_*, no ungrounded axioms)
+Declared by: Application-layer ADR-001 / manifest specification
+Gate 3 Status: gate3_partial (Declared Classical Extension)
+```
+
+5. Architectural Conclusions & Governance Implications
+
+1. Empirical Validation of Negative Controls: Both negative controls executed in `kernel/test` confirmed active Gate 3 enforcement:
+   - `negative_control_native`: emitted dynamic axiom `negative_control_native._native.native_decide.ax_1_1` and was rejected via pattern match `*.native_decide.ax_*`.
+   - `negative_control_sorry`: emitted literal axiom `sorryAx` and was rejected via literal match.
+2. Two-Tier Audit Legibility: LexLean's local policy verification (`result: ok`) and Gate 3's global TCB certification (`gate3_partial`) operate in harmony. Side-by-side reporting resolves any apparent contradiction between a clean compiler pass and a non-constructive classical extension.
+3. SLA Partition Decision (`INV-023d`): To prevent predictable expansion from breaching timing ceilings when C1 modules are introduced, the SLA is formally partitioned:
+   - `INV-023d-unit` (Unit Preflight / Manifest Review): Budget $\le 10.0\text{s}$ (measured: $9.08\text{s}$, 90.8% headroom ceiling).
+   - `INV-023d-int` (Multi-Module Integration Pipeline): Budget $\le 30.0\text{s}$ (governs multi-module domain models: `nat-add-zero`, C1 rational models, `TextRequest`).
+   - `INV-023-kern` (Lean 4 Kernel Elaboration Alone): Budget $\le 1.0\text{s}$ (measured: $365.9\text{ms}$).
+4. Toolchain & Semantic Parity: Both `kernel/lean` and `kernel/test` compile through the identical `lexlean` binary (`lexlean 0.4.3`, SHA-256: `f943d51f5684760c8a904156904823058a7f2d94281373fc5d59454659bf023c`) and declare identical language semantics (`language = "1.2"`, `semantics_id = 4b3ed2378d6c43bb32a41d466cf140337e8b1cedc5e1f345aaf3395f488f63a9`).
+5. Empirical Resolution of C1 Across Algebraic Domains:
+   The classical axiom cone {propext, Quot.sound, Classical.choice} was empirically proven to be intrinsic to Lean 4's canonical `Init.Data.Rat` fraction-normalization implementation, NOT to rational arithmetic in general.
+   - Finite Field ZMod 5 (`c1-zmod5`) and Symmetric Group S3 (`c1-s3`): 100% constructive, axiom cone `[]`, Gate 3 Certified via definitional `rfl`.
+   - Constructive Rational Prototype (`c1-constructive-rat`): Unreduced fraction pairs Z x N+ with cross-multiplication equivalence eliminates Classical.choice and Quot.sound 100%, leaving only `[propext]` from core integer arithmetic.
+   - Dual-Carrier Standard Package (`lexlean.std.rat@1.0.0`): Implements both classical `rat` (GCD-normalized) and constructive `frac` (choice-free), verified in `c1-std-rat` (Attestation `8caad4ef...`, baseline `cb53a6f5...`).
+   - Packaging Validation vs. Full C1 Inversion: In `c1-std-rat`, `rat_refl` and `frac_refl` emit `[]` as packaging and compiler pipeline validations because reflexivity does not invoke `Rat.add` or `Rat.add_neg_cancel`. Full additive inversion over standard `Rat` inherits `{propext, Quot, Choice}`, whereas inversion over `Frac` requires only `[propext]`. All 5 domain fixtures execute in 6.22s under the 30.0s `INV-023d-int` integration budget (79.3% headroom).
+
+Sources
+1. https://drive.google.com/open?id=1Lfs3I5-GqEUg_W2E4NfBfIBhH2488ckf
+2. Axioms and Computation - Lean Programming Language
+3. 11. Axioms and Computation — Theorem Proving in Lean 3 (outdated) 3.23.0 documentation
+4. Quotients - Lean Programming Language
+5. lean4/src/Init/Core.lean at master - GitHub
+6. Formalization of Model Theory in Lean - Floris van Doorn
+7. Theorem Proving in Lean 4
+8. Surprises from "vibe validating" an algorithm with Lean : r/leanprover - Reddit
+9. Axioms - Lean Programming Language
+10. Geometric Measurements of the Axiom of Choice in Neural Proof Embeddings - arXiv
+11. TCB-Expansion Attacks on Lean 4 and the LLM Proof Reviewers That (Mostly) Miss Them
+12. Goedel-Code-Prover: Hierarchical Proof Search for Open State-of-the-Art Code Verification - arXiv
+13. MoteMath/lean-builds-google-deepmind-alphaproof-nexus-results
+14. RFC: One axiom per native computation · Issue #12216 · leanprover/lean4 - GitHub
+15. lean - What is the precise meaning of "reducible"? - Proof Assistants Stack Exchange
+16. MoteMath/lean-builds-google-deepmind-formal-conjectures
+17. verify_proof - AXLE Documentation - Axiom Lean Engine
+18. Proving an order relation between two concrete real numbers (Lean)
+19. Mark eqSystem6_no_solution_d3 as solved via external Lean 4 proof · Issue #4609 · google-deepmind/formal-conjectures - GitHub
+20. rfl Tactic in Lean 4: Proof by Reflexivity
+21. Lean 4.35.0 (2026-10-12)
+22. Lean v4.35: native_decide no longer uses Lean.ofReduceBool

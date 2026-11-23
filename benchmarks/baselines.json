@@ -1,0 +1,242 @@
+{
+  "project_root": "/run/media/multiplic/AGI/prismagi/mount/PRIME/kernel/lean",
+  "timestamp_utc": "2026-11-23T00:37:02.365815+00:00",
+  "total_duration_seconds": 116.41,
+  "pipelines": {
+    "lexlean_check": {
+      "samples": 10,
+      "min_ms": 690.89,
+      "max_ms": 874.28,
+      "mean_ms": 803.37,
+      "stddev_ms": 60.92,
+      "p50_ms": 846.63,
+      "p90_ms": 874.28,
+      "p99_ms": 874.28
+    },
+    "lexlean_verify": {
+      "samples": 3,
+      "min_ms": 21447.39,
+      "max_ms": 22161.6,
+      "mean_ms": 21826.21,
+      "stddev_ms": 293.19,
+      "p50_ms": 21869.64,
+      "p90_ms": 22161.6,
+      "p99_ms": 22161.6
+    },
+    "prismpm_check": {
+      "samples": 10,
+      "min_ms": 3108.94,
+      "max_ms": 3313.43,
+      "mean_ms": 3205.96,
+      "stddev_ms": 60.31,
+      "p50_ms": 3193.12,
+      "p90_ms": 3313.43,
+      "p99_ms": 3313.43
+    },
+    "lean_kernel_elaboration": {
+      "samples": 10,
+      "min_ms": 347.28,
+      "max_ms": 401.42,
+      "mean_ms": 365.5,
+      "stddev_ms": 14.48,
+      "p50_ms": 365.92,
+      "p90_ms": 401.42,
+      "p99_ms": 401.42
+    }
+  },
+  "wasm": {
+    "iterations": 10000,
+    "warmup": 1000,
+    "wasm_size_bytes": 1923,
+    "cold_instantiation": {
+      "samples": 100,
+      "min_us": 30.911,
+      "max_us": 328.121,
+      "mean_us": 70.214,
+      "stddev_us": 32.731,
+      "p50_us": 62.34,
+      "p90_us": 95.651,
+      "p99_us": 328.121,
+      "ops_per_sec": 14242,
+      "total_duration_ms": 7.02
+    },
+    "allocation": {
+      "alloc_0B": {
+        "samples": 2000,
+        "min_us": 1.097,
+        "max_us": 135.014,
+        "mean_us": 2.122,
+        "stddev_us": 3.719,
+        "p50_us": 1.46,
+        "p90_us": 2.823,
+        "p99_us": 14.419,
+        "ops_per_sec": 471305,
+        "total_duration_ms": 4.24
+      },
+      "alloc_3B": {
+        "samples": 2000,
+        "min_us": 1.025,
+        "max_us": 57.84,
+        "mean_us": 2.184,
+        "stddev_us": 2.815,
+        "p50_us": 1.556,
+        "p90_us": 2.846,
+        "p99_us": 18.157,
+        "ops_per_sec": 457946,
+        "total_duration_ms": 4.37
+      },
+      "alloc_32B": {
+        "samples": 2000,
+        "min_us": 1.076,
+        "max_us": 301.62,
+        "mean_us": 2.299,
+        "stddev_us": 7.507,
+        "p50_us": 1.421,
+        "p90_us": 2.853,
+        "p99_us": 19.073,
+        "ops_per_sec": 435006,
+        "total_duration_ms": 4.6
+      },
+      "alloc_64B": {
+        "samples": 2000,
+        "min_us": 1.062,
+        "max_us": 310.121,
+        "mean_us": 2.418,
+        "stddev_us": 7.907,
+        "p50_us": 1.403,
+        "p90_us": 2.941,
+        "p99_us": 19.237,
+        "ops_per_sec": 413585,
+        "total_duration_ms": 4.84
+      },
+      "alloc_128B": {
+        "samples": 2000,
+        "min_us": 0.964,
+        "max_us": 43.756,
+        "mean_us": 1.98,
+        "stddev_us": 2.575,
+        "p50_us": 1.346,
+        "p90_us": 2.728,
+        "p99_us": 16.982,
+        "ops_per_sec": 505087,
+        "total_duration_ms": 3.96
+      }
+    },
+    "vectors": [
+      {
+        "vector_index": 1,
+        "name": "vector_1_req_3B",
+        "request_len": 3,
+        "response_len": 13,
+        "verified_exact": true,
+        "stats": {
+          "samples": 5000,
+          "min_us": 25.006,
+          "max_us": 13918.277,
+          "mean_us": 67.502,
+          "stddev_us": 411.916,
+          "p50_us": 35.978,
+          "p90_us": 74.012,
+          "p99_us": 284.164,
+          "ops_per_sec": 14814,
+          "total_duration_ms": 337.51
+        }
+      },
+      {
+        "vector_index": 2,
+        "name": "vector_2_req_1B",
+        "request_len": 1,
+        "response_len": 7,
+        "verified_exact": true,
+        "stats": {
+          "samples": 5000,
+          "min_us": 23.575,
+          "max_us": 9727.623,
+          "mean_us": 59.959,
+          "stddev_us": 358.701,
+          "p50_us": 31.527,
+          "p90_us": 68.663,
+          "p99_us": 271.558,
+          "ops_per_sec": 16678,
+          "total_duration_ms": 299.79
+        }
+      },
+      {
+        "vector_index": 3,
+        "name": "vector_3_req_0B",
+        "request_len": 0,
+        "response_len": 7,
+        "verified_exact": true,
+        "stats": {
+          "samples": 5000,
+          "min_us": 22.769,
+          "max_us": 14974.561,
+          "mean_us": 58.906,
+          "stddev_us": 393.975,
+          "p50_us": 29.959,
+          "p90_us": 65.417,
+          "p99_us": 277.619,
+          "ops_per_sec": 16976,
+          "total_duration_ms": 294.53
+        }
+      },
+      {
+        "vector_index": 4,
+        "name": "vector_4_req_64B",
+        "request_len": 64,
+        "response_len": 74,
+        "verified_exact": true,
+        "stats": {
+          "samples": 5000,
+          "min_us": 25.592,
+          "max_us": 8295.376,
+          "mean_us": 67.483,
+          "stddev_us": 337.766,
+          "p50_us": 42.701,
+          "p90_us": 77.573,
+          "p99_us": 307.475,
+          "ops_per_sec": 14819,
+          "total_duration_ms": 337.41
+        }
+      },
+      {
+        "vector_index": 5,
+        "name": "vector_5_req_65B",
+        "request_len": 65,
+        "response_len": 7,
+        "verified_exact": true,
+        "stats": {
+          "samples": 5000,
+          "min_us": 22.714,
+          "max_us": 8949.357,
+          "mean_us": 61.736,
+          "stddev_us": 356.761,
+          "p50_us": 34.263,
+          "p90_us": 70.149,
+          "p99_us": 290.117,
+          "ops_per_sec": 16198,
+          "total_duration_ms": 308.68
+        }
+      },
+      {
+        "vector_index": 6,
+        "name": "vector_6_req_128B",
+        "request_len": 128,
+        "response_len": 7,
+        "verified_exact": true,
+        "stats": {
+          "samples": 5000,
+          "min_us": 22.883,
+          "max_us": 9089.054,
+          "mean_us": 61.498,
+          "stddev_us": 367.538,
+          "p50_us": 31.968,
+          "p90_us": 68.61,
+          "p99_us": 271.225,
+          "ops_per_sec": 16261,
+          "total_duration_ms": 307.49
+        }
+      }
+    ]
+  }
+}

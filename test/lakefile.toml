@@ -1,0 +1,6 @@
+name = "pirtm_phase0_manifest_review_host"
+version = "0.1.0"
+defaultTargets = ["PirtmPhase0ManifestReviewHost"]
+
+[[lean_lib]]
+name = "PirtmPhase0ManifestReviewHost"

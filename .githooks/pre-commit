@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Pre-commit hook for PRIME Kernel Subsystem (ADR-0027)
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$SCRIPT_DIR"
+
+echo "======================================================================"
+echo " [PRE-COMMIT] PRIME Kernel Formal Verification & Documentation Gate"
+echo "======================================================================"
+
+# Execute full production verification runner
+python3 run_tests.py
+
+# Auto-stage newly generated reports into the pending commit
+if [ -f "reports/TEST_REPORT_LATEST.md" ]; then
+    git add reports/TEST_REPORT_LATEST.md reports/test_report_latest.json
+    echo " [PRE-COMMIT] Auto-staged updated test reports into commit."
+fi
+
+echo "======================================================================"
+echo " [PRE-COMMIT] All formal gates passed. Commit proceeding."
+echo "======================================================================"
+exit 0

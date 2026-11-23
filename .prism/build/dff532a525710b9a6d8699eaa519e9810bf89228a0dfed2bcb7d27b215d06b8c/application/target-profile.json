@@ -1,0 +1,1 @@
+{"contract":"hologram:guest/core-wasm@1","export":"holo_run","input_allocation_cap":128,"maximum_pages":32,"response_maximum":256,"schema":"lean4-prod/core-wasm-target/1"}

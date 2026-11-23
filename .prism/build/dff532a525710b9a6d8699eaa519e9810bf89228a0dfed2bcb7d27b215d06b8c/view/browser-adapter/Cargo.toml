@@ -1,0 +1,13 @@
+[package]
+name = "prism-text-request-browser"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+js-sys = "=0.3.99"
+wasm-bindgen = "=0.2.122"
+prism-text-request = "=0.1.0"

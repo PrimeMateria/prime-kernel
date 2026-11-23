@@ -1,0 +1,120 @@
+{
+  "timestamp": "20261122T181648",
+  "iso_time": "2026-11-22T18:16:48.895155",
+  "iterations": 3,
+  "stats": {
+    "lake_cold": {
+      "mean": 0.3607,
+      "median": 0.3584,
+      "min": 0.3561,
+      "max": 0.3676,
+      "p95": 0.3676,
+      "stddev": 0.005,
+      "samples": [
+        0.3561,
+        0.3584,
+        0.3676
+      ]
+    },
+    "lake_warm": {
+      "mean": 0.1596,
+      "median": 0.1579,
+      "min": 0.1558,
+      "max": 0.165,
+      "p95": 0.165,
+      "stddev": 0.0039,
+      "samples": [
+        0.1558,
+        0.1579,
+        0.165
+      ]
+    },
+    "preflight": {
+      "mean": 0.3205,
+      "median": 0.3136,
+      "min": 0.3105,
+      "max": 0.3372,
+      "p95": 0.3372,
+      "stddev": 0.0119,
+      "samples": [
+        0.3105,
+        0.3136,
+        0.3372
+      ]
+    },
+    "lexlean_check": {
+      "mean": 0.7211,
+      "median": 0.7251,
+      "min": 0.6812,
+      "max": 0.7569,
+      "p95": 0.7569,
+      "stddev": 0.031,
+      "samples": [
+        0.6812,
+        0.7251,
+        0.7569
+      ]
+    },
+    "verify": {
+      "mean": 9.0818,
+      "median": 9.4441,
+      "min": 8.1842,
+      "max": 9.6172,
+      "p95": 9.6172,
+      "stddev": 0.6387,
+      "samples": [
+        8.1842,
+        9.4441,
+        9.6172
+      ]
+    },
+    "lake_speedup": 2.26,
+    "attestation_hash": "98e3d246b595fcbb98dceebce384283c3501173a6154a4966a9f55ee7d398190",
+    "hash_drift_count": 0
+  },
+  "evaluations": {
+    "INV-023a_lake_cold": {
+      "measured": 0.3607,
+      "threshold": 5.0,
+      "unit": "s",
+      "pass": true
+    },
+    "INV-023a_lake_warm": {
+      "measured": 0.1596,
+      "threshold": 0.5,
+      "unit": "s",
+      "pass": true
+    },
+    "INV-023a_lake_speedup": {
+      "measured": 2.26,
+      "threshold": 1.5,
+      "unit": "x",
+      "pass": true
+    },
+    "INV-023b_preflight": {
+      "measured": 0.3205,
+      "threshold": 1.0,
+      "unit": "s",
+      "pass": true
+    },
+    "INV-023c_lexlean_check": {
+      "measured": 0.7211,
+      "threshold": 2.0,
+      "unit": "s",
+      "pass": true
+    },
+    "INV-023d_verify_throughput": {
+      "measured": 9.0818,
+      "threshold": 15.0,
+      "unit": "s",
+      "pass": true
+    },
+    "INV-023e_attestation_drift": {
+      "measured": 0,
+      "threshold": 0,
+      "unit": "drift",
+      "pass": true
+    }
+  },
+  "all_passed": true
+}

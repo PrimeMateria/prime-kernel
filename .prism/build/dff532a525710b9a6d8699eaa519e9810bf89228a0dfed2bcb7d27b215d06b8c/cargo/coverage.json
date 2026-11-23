@@ -1,0 +1,8 @@
+{
+  "erased_proof_dependencies": [],
+  "external_calls": [],
+  "included_definitions": ["PrismTextRequest.Foundation.Bytes.appendBytes","PrismTextRequest.Foundation.Bytes.byteLength","PrismTextRequest.Foundation.Utf8.decode","PrismTextRequest.TextRequest.dispatch"],
+  "opaque_nodes": [],
+  "requested_roots": ["PrismTextRequest.TextRequest.dispatch"],
+  "unsupported_types": []
+}

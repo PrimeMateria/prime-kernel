@@ -1,0 +1,26 @@
+/.lexlean/
+/.lake/
+__pycache__/
+*.pyc
+
+# Timestamped and legacy test reports archive
+reports/test-report-*.md
+reports/test-report-*.json
+reports/*_20*.md
+reports/*_20*.json
+reports/logs/
+reports/benchmarks/
+reports/latest-test-report.md
+reports/latest-test-report.json
+
+test/reports/TEST_REPORT_20*.md
+test/reports/test_report_20*.json
+test/reports/BENCHMARK_REPORT_20*.md
+test/reports/benchmark_report_20*.json
+test/reports/logs/
+
+# Scratch workspace
+scratch/
+
+
+

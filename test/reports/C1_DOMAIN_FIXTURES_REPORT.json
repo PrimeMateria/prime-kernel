@@ -1,0 +1,87 @@
+{
+  "timestamp": "2026-11-23T12:02:51Z",
+  "sla": {
+    "budget": 30.0,
+    "total_duration": 6.607369933990412,
+    "status": "PASS",
+    "headroom_pct": 77.97543355336529
+  },
+  "fixtures": [
+    {
+      "id": "c1-zmod5",
+      "name": "Finite Field ZMod 5 (Z/5Z)",
+      "theorem": "C1ZMod5.c1_zmod5",
+      "duration": 0.42093491699779406,
+      "exit_code": 0,
+      "observed_cone": [],
+      "pa_encodable": true,
+      "clean_cone": true,
+      "gate3": "Gate 3 Certified",
+      "tcb_tier": "Constructive Type Theory",
+      "stdout": "'C1ZMod5.c1_zmod5' does not depend on any axioms",
+      "stderr": ""
+    },
+    {
+      "id": "c1-s3",
+      "name": "Symmetric Group S3 (Order 6)",
+      "theorem": "C1S3.c1_s3",
+      "duration": 0.5731556719983928,
+      "exit_code": 0,
+      "observed_cone": [],
+      "pa_encodable": true,
+      "clean_cone": true,
+      "gate3": "Gate 3 Certified",
+      "tcb_tier": "Constructive Type Theory",
+      "stdout": "'C1S3.c1_s3' does not depend on any axioms",
+      "stderr": ""
+    },
+    {
+      "id": "c1-constructive-rat",
+      "name": "Constructive Rational Prototype (Frac)",
+      "theorem": "ConstructiveRat.c1_frac",
+      "duration": 0.517975529000978,
+      "exit_code": 0,
+      "observed_cone": [
+        "propext"
+      ],
+      "pa_encodable": false,
+      "clean_cone": true,
+      "gate3": "gate3_partial (Choice-Free Extension Section 4b)",
+      "tcb_tier": "Constructive + Propext",
+      "stdout": "'ConstructiveRat.c1_frac' depends on axioms: [propext]",
+      "stderr": ""
+    },
+    {
+      "id": "c1-elementary-rat",
+      "name": "Standard Lean 4 Rat (Init.Data.Rat)",
+      "theorem": "c1_elementary_rat",
+      "duration": 0.45072092599002644,
+      "exit_code": 0,
+      "observed_cone": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "pa_encodable": false,
+      "clean_cone": true,
+      "gate3": "gate3_partial (Declared Classical Extension Section 4b)",
+      "tcb_tier": "Full Classical TCB",
+      "stdout": "'c1_elementary_rat' depends on axioms: [propext, Classical.choice, Quot.sound]",
+      "stderr": ""
+    },
+    {
+      "id": "c1-std-rat",
+      "name": "Literate Dual-Carrier Rational Model (c1-std-rat)",
+      "theorem": "C1StdRat.Main (rat_refl, frac_refl)",
+      "duration": 4.644302086002426,
+      "exit_code": 0,
+      "observed_cone": [],
+      "pa_encodable": true,
+      "clean_cone": true,
+      "gate3": "Gate 3 Certified",
+      "tcb_tier": "Dual-Carrier Packaging (Lean 4 + Frac)",
+      "stdout": "verified 1 module; attestation 8caad4efa85cf5d6e77b2ef0c2e1b1189cc04e999195772b6bb880f80922bec3",
+      "stderr": ""
+    }
+  ]
+}
