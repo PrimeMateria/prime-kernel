@@ -30,7 +30,7 @@ Two objects may be formed from identical substrate and still constitute wholly s
 
 This License governs one such substrate: the Constitutional Core of Multiplicity Theory — a body of prime-indexed mathematical axioms, operators, and theorems that serves as foundational material for any implementation that draws upon it. The Constitutional Core belongs to everyone. What any person makes from it belongs to them. These two propositions are not in tension. They are the governing logic of everything that follows.
 
-UOR Foundation stewards this substrate not as an owner but as a custodian — maintaining the integrity of the commons, operating the registry in which declared works are permanently recorded, and issuing certification marks to implementations that have been independently verified for conformance. UOR Foundation does not own what is built from the Constitutional Core. UOR Foundation does not participate in the commercial affairs of those who build from it. UOR Foundation does not impose conditions on the use of the substrate. UOR Foundation protects three things only: the permanence of the public domain dedication, the integrity of the registry record, and the accuracy of the certification marks.
+The Prime Materia Commons stewards this substrate not as an owner but as a custodian — maintaining the integrity of the commons, operating the registry in which declared works are permanently recorded, and issuing certification marks to implementations that have been independently verified for conformance. The Prime Materia Commons does not own what is built from the Constitutional Core. The Prime Materia Commons does not participate in the commercial affairs of those who build from it. The Prime Materia Commons does not impose conditions on the use of the substrate. The Prime Materia Commons protects three things only: the permanence of the public domain dedication, the integrity of the registry record, and the accuracy of the certification marks.
 
 The reader who understands what it means to work with foundational material — who has felt the difference between the substrate and the thing made from it, who has recognized that the same material shaped for different purposes produces different objects entirely — will find in this License a familiar logic, expressed in formal terms.
 
@@ -98,7 +98,7 @@ Section 1. Defined Terms
 
 1.5  "Operator Atlas" means the permanent, publicly accessible
      registry maintained by UOR Foundation at
-     operatoratlas.citizengardens.org, in which Declarations of
+     https://uor.foundation, in which Declarations of
      Formation are received, timestamped, and archived for a minimum
      stewardship horizon of three hundred (300) years.
 
@@ -159,7 +159,7 @@ Section 1. Defined Terms
 ```
 Section 2. Irrevocable Public Domain Dedication
 
-2.1  Ryan O. Van Gelder and UOR Foundation hereby irrevocably
+2.1  Ryan O. Van Gelder and The Prime Materia Commons hereby irrevocably
      dedicate the Constitutional Core to the public domain, globally,
      in perpetuity, under the ΛProof Open Mathematical Foundation
      Pledge.
@@ -195,7 +195,7 @@ Section 2. Irrevocable Public Domain Dedication
 
 2.5  This dedication is irrevocable. It cannot be rescinded,
      modified, or superseded by any subsequent instrument, action,
-     or agreement of UOR Foundation or Ryan O. Van Gelder,
+     or agreement of The Prime Materia Commons or Ryan O. Van Gelder,
      including any future revision of this License. Future versions
      of this License may modify Parts III and VII. They may not
      diminish or condition the dedication made in this Part II.
